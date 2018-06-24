@@ -1,1 +1,1 @@
-gsda f fsafdfdsa
+git remote add origin git@github.com:qucan/laravel.git
