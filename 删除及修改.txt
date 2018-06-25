@@ -1,7 +1,0 @@
-É¾³ý
-git rm text2.txt
-git commit -am " "
-git status
-ÐÞ¸Ä
-git add text.txt 
-git commit -m ""
