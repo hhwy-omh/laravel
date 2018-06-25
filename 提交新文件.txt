@@ -1,0 +1,3 @@
+git add 4545.txt
+git commit -m "添加一个文件"
+git push
