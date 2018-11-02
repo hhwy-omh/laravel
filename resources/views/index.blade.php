@@ -523,7 +523,7 @@ function link_operating(name,title){
          <div class="footer_style" id="footerstyle">  
 		 <script type="text/javascript">try{ace.settings.check('footerstyle' , 'fixed')}catch(e){}</script>
           <p class="l_f">版权所有：南京四美软件  苏ICP备11011739号</p>
-          <p class="r_f">地址：南京市鼓楼区阅江楼街道公共路64号  邮编：210011 技术支持：XXXX</p>
+          <p class="r_f">地址：广东省汕头市社会主义街道建军路666号  邮编：946666 技术支持：火山灰科技公司</p>
          </div>
          <!--修改密码样式-->
          <div class="change_Pass_style" id="change_Pass">
