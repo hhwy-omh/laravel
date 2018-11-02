@@ -269,14 +269,6 @@ function link_operating(name,title){
 										</div>
 									</a>
 								</li>
-                                <li>IP地址为：<span id="ip_dp"></span></li>
-								<li>
-									<a href="#">
-										<i class="btn btn-xs btn-primary icon-user"></i>
-										切换为编辑登录..
-									</a>
-								</li>
-
 								<li>
 									<a href="#">
 										<div class="clearfix">
