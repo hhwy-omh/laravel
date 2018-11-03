@@ -10,7 +10,7 @@
 
 <div class="register-container">
 	<h1>注册</h1>
-	<button type="button" class="btn btn-warning" id="button" style="background-color: #47b445;position:absolute;width: 200px;height: 200px;z-index: 9999;margin:83px -102px;display:none;">注册成功，请登陆！</button>
+	<button type="button" class="btn btn-warning" id="button" style="background-color: #47b445;position:absolute;width: 200px;height: 200px;z-index: 9999;margin:83px -102px;display:none;">注册成功，去邮箱激活即可登陆！</button>
 	<form action="register_get" method="post" id="registerForm">
 		{{ csrf_field() }}
 		<div>
@@ -58,7 +58,7 @@
             var but4 = $("#pas4").val();
             if(but1=="" || but2=="" || but3=="" || but4==""){
 			}else{
-                $("#button").show().delay(2000).hide(200);
+                $("#button").show().delay(4000).hide(400);
 			}
         });
     });

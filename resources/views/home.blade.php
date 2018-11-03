@@ -35,7 +35,7 @@
      @if(session('id'))
         <div class="alert alert-block alert-success" id="h3_s" style="display:none">
             <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
-            <h3>你上次登陆时间为{{session('date')}}，登陆IP:{{session('ip')}}.</h3>
+            <h3>你本次登陆的时间为{{session('date')}}，登陆地为:{{session('ip')}}</h3>
         </div>
      @endif
  <div class="state-overview clearfix">

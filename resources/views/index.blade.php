@@ -213,7 +213,7 @@ function link_operating(name,title){
       
     
 }
-</script>	
+</script>
 	</head>
 	<body>
 		<div class="navbar navbar-default" id="navbar">
@@ -236,13 +236,13 @@ function link_operating(name,title){
                 <li class="light-blue">
 				<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 					@if(session('id'))
-				 		<span  class="time"><em id="time"></em></span><span class="user-info"><small>欢迎光临,</small>{{session('username')}}</span>
+				 		<span  class="time"><em id="time"></em></span><span class="user-info" style="padding: 3px 0;margin: 0 10px"><img src="images/abc.jpg" alt="" style="width: 40px;height: 40px;border-radius:20px;">&nbsp;&nbsp;&nbsp;<span>{{session('username')}}</span></span>
 					@else
-						<span  class="time"><em id="time"></em></span><span class="user-info"><small>欢迎光临,</small>游客</span>
+						<span  class="time"><em id="time"></em></span><span class="user-info" style="padding: 3px 0;margin: 0 10px"><img src="images/user.png" alt="" style="width: 40px;height: 40px;border-radius:20px;">&nbsp;&nbsp;&nbsp;<span>游客</span></span>
 					@endif
-				 <i class="icon-caret-down"></i>
+				 <i class="" style="color: #fbfbfb05;width: 0px;"></i>
 				</a>
-				<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+				<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close" style="min-width: 122px;right: 0;">
 					@if(session('id'))
 						<li><a href="javascript:void(0)" name="Systems" title="系统设置" class="iframeurl"><i class="icon-cog"></i>网站设置</a></li>
 						<li><a href="javascript:void(0)" name="admin_info" title="个人信息" class="iframeurl"><i class="icon-user"></i>个人资料</a></li>
@@ -578,11 +578,6 @@ function link_operating(name,title){
         };
     }
 
-    // Usage
-
-    getUserIP(function(ip){
-        $("#ip_dp").prepend(ip);
-    });
 
 </script>
 

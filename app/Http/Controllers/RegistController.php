@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use \Illuminate\Session\Middleware\StartSession;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class RegistController extends Controller
 {
@@ -20,16 +21,18 @@ class RegistController extends Controller
     public function register_get(Request $req)
     {
         $data = $req->all();
-        $time = date("Y-m-d H:i:s");
-        DB::table('users')->insert([
-            'created_at' => $time,
-            'updated_at' => $time,
-            'user' => $data['username'],
-            'mobile' => $data['phone_number'],
-            'password' => Hash::make($data['password']),
-            'email' => $data['email']
-        ]);
-        return redirect('login');
+        $this->emil($data['username'],$data['email'],$data['_token']);
+       $time = date("Y-m-d H:i:s");
+       DB::table('users')->insert([
+           'created_at' => $time,
+           'updated_at' => $time,
+           'token' => $data['_token'],
+           'user' => $data['username'],
+           'mobile' => $data['phone_number'],
+           'password' => Hash::make($data['password']),
+           'email' => $data['email']
+       ]);
+       return redirect('login');
     }
 
     public function register_name()
@@ -50,15 +53,18 @@ class RegistController extends Controller
         $time = date("Y-m-d H:i:s");
         if ($user) {
             if (Hash::check($req->password, $user->password)) {
-                $data = $this->get_real_ip();
+                dd($req['_token']);
+                $ip = $this->get_real_ip();
+                $stmt = $this->getCity($ip);
+                $ip_gsd = $stmt['country'].$stmt['region'].$stmt['city'];
                DB::table('users')->where('user', $req->username)->update([
-                   'ip'=>$data,
+                   'ip'=>$ip,
                    'updated_at' => $time,
                ]);
                session([
                    'id' => $user->id,
                    'username' => $user->user,
-                   'ip' => $data,
+                   'ip' => $ip_gsd,
                    'date' => $time,
                ]);
                return redirect('/');
@@ -76,39 +82,86 @@ class RegistController extends Controller
         return redirect('/');
     }
     function get_real_ip()
-
     {
-
         $ip=FALSE;
-
         if(!empty($_SERVER["HTTP_CLIENT_IP"])){
-
             $ip = $_SERVER["HTTP_CLIENT_IP"];
-
         }
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-
             $ips = explode (", ", $_SERVER['HTTP_X_FORWARDED_FOR']);
-
             if ($ip) { array_unshift($ips, $ip); $ip = FALSE; }
-
             for ($i = 0; $i < count($ips); $i++) {
-
                 if (!eregi ("^(10│172.16│192.168).", $ips[$i])) {
-
                     $ip = $ips[$i];
-
                     break;
-
                 }
-
             }
-
         }
         return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
-
     }
+    function getCity($ip){
+        $url="http://ip.taobao.com/service/getIpInfo.php?ip=".$ip;
+        $ip=json_decode(file_get_contents($url));
+        if((string)$ip->code=='1'){
+            return false;
+        }
+        $data = (array)$ip->data;
+        return $data;
+    }
+
+    public function emil($user,$email,$_token){
+        $transport = (new \Swift_SmtpTransport('smtp.163.com', 25))
+            ->setUsername('13415018910@163.com')
+            ->setPassword('qucan134');
+        $mailer = new \Swift_Mailer($transport);
+        $message = new \Swift_Message($transport);
+        $message->setSubject('账户激活')
+            ->setFrom(['13415018910@163.com' => '火山科技有限公司'])
+            ->setTo([$email, $email => $user])
+            ->setBody("欢迎注册：<br><a href='http://localhost:9999/emil_in?name=$user&token=$_token'>点击即可激活您的账户:$_token</a>",'text/html');
+            $mailer->send($message);
+    }
+    public function emil_in()
+    {
+        $stmt = $_GET;
+        $user = $stmt['name'];
+        $token = $stmt['token'];
+        $use = DB::table('users')->where('user', $user)->where('token', $token)->first();
+        if($use){
+            DB::table('users')->where('user', $user)->update(['state' => '1']);
+            echo "<script> alert('激活成功，请登陆！');parent.location.href='/login'; </script>";
+        }
+    }
+
 }
+//array(13) {
+//    ["ip"]=>
+//  string(15) "223.104.147.242"
+//    ["country"]=>
+//  string(6) "中国"
+//    ["area"]=>
+//  string(0) ""
+//    ["region"]=>
+//  string(6) "江苏"
+//    ["city"]=>
+//  string(6) "宿迁"
+//    ["county"]=>
+//  string(2) "XX"
+//    ["isp"]=>
+//  string(6) "移动"
+//    ["country_id"]=>
+//  string(2) "CN"
+//    ["area_id"]=>
+//  string(0) ""
+//    ["region_id"]=>
+//  string(6) "320000"
+//    ["city_id"]=>
+//  string(6) "321300"
+//    ["county_id"]=>
+//  string(2) "xx"
+//    ["isp_id"]=>
+//  string(6) "100025"
+//}
 
 
 

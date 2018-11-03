@@ -45,6 +45,8 @@ Route::get('/admin_info', 'BlogController@admin_info')->name('admin_info');
 Route::get('/login', 'RegistController@login')->name('login');
 Route::post('/login_in', 'RegistController@login_in')->name('login_in');
 Route::get('/logout', 'RegistController@logout')->name('logout');
+Route::get('/emil', 'RegistController@emil')->name('emil');
+Route::get('/emil_in', 'RegistController@emil_in')->name('emil_in');
 Route::get('/register', 'RegistController@register')->name('register');
 Route::post('/register_get', 'RegistController@register_get')->name('register_get');
 Route::get('/register_name', 'RegistController@register_name')->name('register_name');
