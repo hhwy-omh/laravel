@@ -67,10 +67,9 @@ class RegistController extends Controller
                     session([
                         'id' => $user->id,
                         'username' => $user->user,
-                        'ip' => $ip,
+                        'ip' => $ip_gsd,
                         'date' => $time,
                     ]);
-                    session()->keep(['ip_de', 'email']);
                     DB::table('users')->where('id', $user->id)->update(['quantity' => '0']);
                     session()->forget('error_s');
                     return redirect('/');
