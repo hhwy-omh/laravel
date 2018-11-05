@@ -5,7 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>注册</title>
 <link rel="stylesheet" href="css/style2.css" />
+	<style>
+		#username-error{
+            position: absolute;
+            border-radius: 5px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 1.5;
+		}
+        #pas1-error{
+            position: absolute;
+            border-radius: 5px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 1.5;
+		}
+		#pas2-error{
+            position: absolute;
+            border-radius: 5px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 1.5;
+		}
+		#pas3-error{
+            position: absolute;
+            border-radius: 5px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 1.5;
+		}
+		#pas4-error{
+            position: absolute;
+            border-radius: 5px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 1.5;
+		}
 
+	</style>
 <body>
 
 <div class="register-container">
@@ -15,7 +52,7 @@
 		{{ csrf_field() }}
 		<div>
 			<input type="text" name="username" id = "username" class="username" placeholder="您的用户名" autocomplete="off"/>
-			<label id="user_err" class="error" style="display:none"><span>用户名已存在！</span></label>
+			<div id="user_err" style="position: absolute;border-radius: 5px;height: 24px;font-size: 16px;line-height: 1.5;background-color: rgba(245, 26, 26, 0.81);display:none;width: 99%;"><span>用户名已注册，请更换！</span></div>
 		</div>
 		<div>
 			<input type="password" id="pas1" name="password" class="password" placeholder="输入密码" oncontextmenu="return false" onpaste="return false" />
@@ -52,11 +89,12 @@
 <script>
     $(document).ready(function(){
         $("#submit").click(function(){
+            var but5 = $("#username").val();
             var but1 = $("#pas1").val();
             var but2 = $("#pas2").val();
             var but3 = $("#pas3").val();
             var but4 = $("#pas4").val();
-            if(but1=="" || but2=="" || but3=="" || but4==""){
+            if(but5.length < 4 || but5.length > 10 || but1.length < 6 || but1.length > 12 || but2.length < 6 || but2.length > 12 || but3.length != 11 || but4.length < 7){
 			}else{
                 $("#button").show().delay(4000).hide(400);
 			}

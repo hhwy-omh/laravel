@@ -7,7 +7,22 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link rel="stylesheet" href="css/style2.css" />
-
+	<style>
+		#username-error{
+			position: absolute;
+			border-radius: 5px;
+			height: 24px;
+			font-size: 16px;
+			line-height: 1.5;
+		}
+		#password-error{
+			position: absolute;
+			border-radius: 5px;
+			height: 24px;
+			font-size: 16px;
+			line-height: 1.5;
+		}
+	</style>
 <body>
 
 <div class="login-container">
@@ -15,7 +30,10 @@
 	<form action="login_in" method="post" id="loginForm">
 		{{ csrf_field() }}
 		<div>
-			<input type="text" name="username" class="username" placeholder="用户名" autocomplete="off"/>
+			@if(session('error_s'))
+				<span style="color: #cc3830;position:absolute;text-align:center;width: 100%;" id="su">{{session('error_s')}}</span>
+			@endif
+			<input type="text" name="username" class="username" placeholder="用户名/手机号" autocomplete="off"/>
 		</div>
 		<div>
 			<input type="password" name="password" class="password" placeholder="密码" oncontextmenu="return false" onpaste="return false" />
@@ -39,6 +57,11 @@
 
 </body>
 </html>
+<script>
+    $(document).ready(function(){
+                $("#su").fadeOut(5000);
+    });
+</script>
 {{--<script type="text/javascript">--}}
     {{--function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs--}}
         {{--//compatibility for firefox and chrome--}}

@@ -52,27 +52,44 @@ class RegistController extends Controller
         $user = DB::table('users')->where('user', $req->username)->first();
         $time = date("Y-m-d H:i:s");
         if ($user) {
+            if($user->quantity<3){
             if (Hash::check($req->password, $user->password)) {
-                dd($req['_token']);
-                $ip = $this->get_real_ip();
-                $stmt = $this->getCity($ip);
-                $ip_gsd = $stmt['country'].$stmt['region'].$stmt['city'];
-               DB::table('users')->where('user', $req->username)->update([
-                   'ip'=>$ip,
-                   'updated_at' => $time,
-               ]);
-               session([
-                   'id' => $user->id,
-                   'username' => $user->user,
-                   'ip' => $ip_gsd,
-                   'date' => $time,
-               ]);
-               return redirect('/');
+                if ($user->state == 1) {
+                    $ip = $this->get_real_ip();
+                    $stmt = $this->getCity($ip);
+                    $ip_gsd = $stmt['country'].$stmt['region'].$stmt['city'];
+                    DB::table('user_record')->insert([
+                        'ip' => $ip,
+                        'ip_time' => $time,
+                        'address' => $ip_gsd,
+                        'user_id' => $user->id,
+                    ]);
+                    session([
+                        'id' => $user->id,
+                        'username' => $user->user,
+                        'ip' => $ip,
+                        'date' => $time,
+                    ]);
+                    session()->keep(['ip_de', 'email']);
+                    DB::table('users')->where('id', $user->id)->update(['quantity' => '0']);
+                    session()->forget('error_s');
+                    return redirect('/');
+                } else {
+                    session()->flash('error_s', '账户未激活，请登陆邮箱激活！');
+                    return redirect('login');
+                }
             } else {
-                echo '用户名或密码不正确';
+                DB::table('users')->where('id', $user->id)->increment('quantity');
+                session()->flash('error_s', '密码不正确！');
+                return redirect('login');
+            }
+        }else{
+                session()->flash('error_s','密码已输错3次无法再输入');
+                return redirect('login');
             }
         } else {
-            echo '用户名或密码不正确';
+            session()->flash('error_s','用户名或密码不正确！');
+            return redirect('login');
         }
     }
 
@@ -118,7 +135,7 @@ class RegistController extends Controller
         $message->setSubject('账户激活')
             ->setFrom(['13415018910@163.com' => '火山科技有限公司'])
             ->setTo([$email, $email => $user])
-            ->setBody("欢迎注册：<br><a href='http://localhost:9999/emil_in?name=$user&token=$_token'>点击即可激活您的账户:$_token</a>",'text/html');
+            ->setBody("欢迎注册：<br><a href='http://www.hhwyomh.cn/emil_in?name=$user&token=$_token'>点击即可激活您的账户:$_token</a>",'text/html');
             $mailer->send($message);
     }
     public function emil_in()
@@ -129,7 +146,7 @@ class RegistController extends Controller
         $use = DB::table('users')->where('user', $user)->where('token', $token)->first();
         if($use){
             DB::table('users')->where('user', $user)->update(['state' => '1']);
-            echo "<script> alert('激活成功，请登陆！');parent.location.href='/login'; </script>";
+            echo "<script> document.write('激活成功，请登陆！');parent.location.href='/login'; </script>";
         }
     }
 
