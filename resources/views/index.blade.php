@@ -4,6 +4,7 @@
 		<meta charset="utf-8" />
 		<title>网站后台管理系统  </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="images/favicon.ico"/>
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 		<!--[if IE 7]>
@@ -40,13 +41,11 @@
         <script src="assets/layer/layer.js" type="text/javascript"></script>
 		<script src="assets/laydate/laydate.js" type="text/javascript"></script>
         <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
-        
-<script type="text/javascript">	
+<script type="text/javascript">
  $(function(){ 
  var cid = $('#nav_list> li>.submenu');
 	  cid.each(function(i){ 
        $(this).attr('id',"Sort_link_"+i);
-   
     })  
  })
  jQuery(document).ready(function(){ 	
@@ -121,7 +120,13 @@ $( document).ready(function(){
   $('#nav_list,.link_cz').find('li.home').on('click',function(){
 	$('#nav_list,.link_cz').find('li.home').removeClass('active');
 	$(this).addClass('active');
-  });												
+  });
+
+  {{--$( document).ready(function(){--}}
+  {{--$('#nav_list,.link_cz').find("a[name='{{session('top')}}']").on('click',function(){--}}
+	{{--$(this).parent().removeClass('active');--}}
+	{{--$(this).parent().addClass('active');--}}
+  {{--});--}}
 //时间设置
   function currentTime(){ 
     var d=new Date(),str=''; 
@@ -213,7 +218,45 @@ function link_operating(name,title){
       
     
 }
+
 </script>
+        <script type="text/javascript">
+            var ua = navigator.userAgent.toLowerCase();
+            if (/iphone|ipad|ipod/.test(ua)) {
+//alert("iphone");
+            } else if (/android/.test(ua)) {
+                var alertmessage="温馨提示：您可以在右下角的菜单中下载最新版本的手机版APP哦！\n \n本提示只出现一次!"
+                var once_per_session=1
+                function get_cookie(Name) {
+                    var search = Name + "="
+                    var returnvalue = "";
+                    if (document.cookie.length > 0) {
+                        offset = document.cookie.indexOf(search)
+                        if (offset != -1) {
+                            offset += search.length
+                            end = document.cookie.indexOf(";", offset);
+                            if (end == -1)
+                                end = document.cookie.length;
+                            returnvalue=unescape(document.cookie.substring(offset, end))
+                        }
+                    }
+                    return returnvalue;
+                }
+                function alertornot(){
+                    if (get_cookie('alerted')==''){
+                        loadalert()
+                        document.cookie="alerted=yes"
+                    }
+                }
+                function loadalert(){
+                    alert(alertmessage)
+                }
+                if (once_per_session==0)
+                    loadalert()
+                else
+                    alertornot()
+            }
+        </script>
 	</head>
 	<body>
 		<div class="navbar navbar-default" id="navbar">
@@ -236,7 +279,7 @@ function link_operating(name,title){
                 <li class="light-blue">
 				<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 					@if(session('id'))
-				 		<span  class="time"><em id="time"></em></span><span class="user-info" style="padding: 3px 0;margin: 0 10px"><img src="images/abc.jpg" alt="" style="width: 40px;height: 40px;border-radius:20px;">&nbsp;&nbsp;&nbsp;<span>{{session('username')}}</span></span>
+				 		<span  class="time"><em id="time"></em></span><span class="user-info" style="padding: 3px 0;margin: 0 10px"><img src="{{session('user_image')}}" alt="" style="width: 40px;height: 40px;border-radius:20px;">&nbsp;&nbsp;&nbsp;<span>{{session('username')}}</span></span>
 					@else
 						<span  class="time"><em id="time"></em></span><span class="user-info" style="padding: 3px 0;margin: 0 10px"><img src="images/user.png" alt="" style="width: 40px;height: 40px;border-radius:20px;">&nbsp;&nbsp;&nbsp;<span>游客</span></span>
 					@endif
@@ -359,83 +402,17 @@ function link_operating(name,title){
 					<div id="menu_style" class="menu_style">
 					<ul class="nav nav-list" id="nav_list">
 				     <li class="home"><a href="javascript:void(0)" name="home" class="iframeurl" title=""><i class="icon-home"></i><span class="menu-text"> 系统首页 </span></a></li>
-                     <li><a href="#" class="dropdown-toggle"><i class="icon-desktop"></i><span class="menu-text"> 产品管理 </span><b class="arrow icon-angle-down"></b></a>
+						@foreach($data as $v)
+                     <li><a href="#" class="dropdown-toggle"><i class="{{$v->privilege_url}}"></i><span class="menu-text"> {{$v->privilege}} </span><b class="arrow icon-angle-down"></b></a>
 					   <ul class="submenu">
-                         <li class="home"><a  href="javascript:void(0)" name="Products_List"  title="产品类表" class="iframeurl"><i class="icon-double-angle-right"></i>产品类表</a></li>
-						 <li class="home"><a  href="javascript:void(0)" name="Brand_Manage" title="品牌管理"  class="iframeurl"><i class="icon-double-angle-right"></i>品牌管理</a></li>
-						 <li class="home"><a href="javascript:void(0)" name="Category_Manage" title="分类管理"  class="iframeurl"><i class="icon-double-angle-right"></i>分类管理</a></li>
-
+						   @foreach($su as $z)
+							   @if($v->id == $z->sub_privilege)
+                         <li class="home"><a  href="javascript:void(0)" name="{{$z->privilege_url}}"  title="{{$z->privilege}}" class="iframeurl"><i class="icon-double-angle-right"></i>{{$z->privilege}}</a></li>
+							   @endif
+						   @endforeach
 						</ul>
 					</li>
-					<li>
-					<a href="#" class="dropdown-toggle"><i class="icon-picture "></i><span class="menu-text"> 图片管理 </span><b class="arrow icon-angle-down"></b></a>
-						<ul class="submenu">
-						<li class="home"><a href="javascript:void(0)" name="advertising" title="广告管理" class="iframeurl"><i class="icon-double-angle-right"></i>广告管理</a></li>
-						<li class="home"><a href="javascript:void(0)" name="Sort_ads" title="分类管理"  class="iframeurl"><i class="icon-double-angle-right"></i>分类管理</a></li>
-							</ul>
-						</li>
-					<li>
-					<a href="#" class="dropdown-toggle"><i class="icon-list"></i><span class="menu-text"> 交易管理 </span><b class="arrow icon-angle-down"></b></a>
-                    <ul class="submenu">
-                    <li class="home"><a href="javascript:void(0)" name="transaction" title="交易信息"  class="iframeurl"><i class="icon-double-angle-right"></i>交易信息</a></li>
-					<li class="home"><a href="javascript:void(0)" name="Order_Chart" title="交易订单（图）"  class="iframeurl"><i class="icon-double-angle-right"></i>交易订单(图)</a></li>
-                    <li class="home"><a href="javascript:void(0)" name="Orderform" title="订单管理"  class="iframeurl"><i class="icon-double-angle-right"></i>订单管理</a></li>
-                    <li class="home"><a href="javascript:void(0)" name="Amounts" title="交易金额"  class="iframeurl"><i class="icon-double-angle-right"></i>交易金额</a></li>
-                    <li class="home"><a href="javascript:void(0)" name="Order_handling" title="订单处理"  class="iframeurl"><i class="icon-double-angle-right"></i>订单处理</a></li>
-					  <li class="home"><a href="javascript:void(0)" name="Refund" title="退款管理"  class="iframeurl"><i class="icon-double-angle-right"></i>退款管理</a></li>
-                   </ul>
-				  </li>
-                   <li>
-				   <a href="#" class="dropdown-toggle"><i class="icon-credit-card"></i><span class="menu-text"> 支付管理 </span><b class="arrow icon-angle-down"></b></a>
-				     <ul class="submenu">
-						<li class="home"><a href="javascript:void(0)" name="Cover_management" title="账户管理" class="iframeurl"><i class="icon-double-angle-right"></i>账户管理</a></li>
-						 <li class="home"><a href="javascript:void(0)" name="payment_method" title="支付方式" class="iframeurl"><i class="icon-double-angle-right"></i>支付方式</a></li>
-						  <li class="home"><a href="javascript:void(0)" name="Payment_Configure" title="支付配置" class="iframeurl"><i class="icon-double-angle-right"></i>支付配置</a></li>
-							</ul>
-						</li>
-                  <li>
-					<a href="#" class="dropdown-toggle"><i class="icon-user"></i><span class="menu-text"> 会员管理 </span><b class="arrow icon-angle-down"></b></a>
-                    <ul class="submenu">
-                    <li class="home"><a href="javascript:void(0)" name="user_list" title="会员列表"  class="iframeurl"><i class="icon-double-angle-right"></i>会员列表</a></li>
-                    <li class="home"><a href="javascript:void(0)" name="member_Grading" title="等级管理"  class="iframeurl"><i class="icon-double-angle-right"></i>等级管理</a></li>
-                    <li class="home"><a href="javascript:void(0)" name="integration" title="会员记录管理"  class="iframeurl"><i class="icon-double-angle-right"></i>会员记录管理</a></li>
-
-                   </ul>
-				  </li>
-				  <li><a href="#" class="dropdown-toggle"><i class="icon-laptop"></i><span class="menu-text"> 店铺管理 </span><b class="arrow icon-angle-down"></b></a>
-							<ul class="submenu">
-								<li class="home"><a href="javascript:void(0)" name="Shop_list" title="店铺列表" class="iframeurl"><i class="icon-double-angle-right"></i>店铺列表</a></li>
-                                <li class="home"><a href="javascript:void(0)" name="Shops_Audit" title="店铺审核" class="iframeurl"><i class="icon-double-angle-right"></i>店铺审核<span class="badge badge-danger">5</span></a></li>
-							</ul>
-						</li>
-						<li><a href="#" class="dropdown-toggle"><i class="icon-comments-alt"></i><span class="menu-text"> 消息管理 </span><b class="arrow icon-angle-down"></b></a>
-							<ul class="submenu">
-								<li class="home"><a href="javascript:void(0)" name="Guestbook" title="留言列表" class="iframeurl"><i class="icon-double-angle-right"></i>留言列表</a></li>
-                                <li class="home"><a href="javascript:void(0)" name="Feedback" title="意见反馈" class="iframeurl"><i class="icon-double-angle-right"></i>意见反馈</a></li>
-							</ul>
-						</li>
-						<li><a href="#" class="dropdown-toggle"><i class="icon-bookmark"></i><span class="menu-text"> 文章管理 </span><b class="arrow icon-angle-down"></b></a>
-							<ul class="submenu">
-								<li class="home"><a href="javascript:void(0)" name="article_list" title="文章列表" class="iframeurl"><i class="icon-double-angle-right"></i>文章列表</a></li>
-                                <li class="home"><a href="javascript:void(0)" name="article_Sort" title="分类管理" class="iframeurl"><i class="icon-double-angle-right"></i>分类管理</a></li>
-							</ul>
-						</li>
-                        	<li><a href="#" class="dropdown-toggle"><i class="icon-cogs"></i><span class="menu-text"> 系统管理 </span><b class="arrow icon-angle-down"></b></a>
-							<ul class="submenu">
-								<li class="home"><a href="javascript:void(0)" name="Systems" title="系统设置" class="iframeurl"><i class="icon-double-angle-right"></i>系统设置</a></li>
-								<li class="home"><a href="javascript:void(0)" name="System_section" title="系统栏目管理" class="iframeurl"><i class="icon-double-angle-right"></i>系统栏目管理</a></li>
-							
-                                <li class="home"><a href="javascript:void(0)" name="System_Logs" title="系统日志" class="iframeurl"><i class="icon-double-angle-right"></i>系统日志</a></li>
-							</ul>
-						</li>
-                        <li><a href="#" class="dropdown-toggle"><i class="icon-group"></i><span class="menu-text"> 管理员管理 </span><b class="arrow icon-angle-down"></b></a>
-							<ul class="submenu">
-							
-								<li class="home"><a href="javascript:void(0)" name="admin_Competence" title="权限管理"  class="iframeurl"><i class="icon-double-angle-right"></i>权限管理</a></li>
-                                <li class="home"><a href="javascript:void(0)" name="administrator" title="管理员列表" class="iframeurl"><i class="icon-double-angle-right"></i>管理员列表</a></li>
-								  <li class="home"><a href="javascript:void(0)" name="admin_info" title="个人信息" class="iframeurl"><i class="icon-double-angle-right"></i>个人信息</a></li>
-							</ul>
-						</li>
+						@endforeach
 					</ul>
 					</div>
 					<script type="text/javascript">
@@ -464,21 +441,19 @@ function link_operating(name,title){
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
-								<a href="index.html">首页</a>
+								<a href="/">首页</a>
 							</li>
 							<li class="active"><span class="Current_page iframeurl"></span></li>
-                            <li class="active" id="parentIframe"><span class="parentIframe iframeurl"></span></li>
+                            <li class="active" id="parentIframe"><span class="parentIframe iframeurl" name=""></span></li>
 							<li class="active" id="parentIfour"><span class="parentIfour iframeurl"></span></li>
 						</ul>
 					</div>
-                    
-                 <iframe id="iframe" style="border:0; width:100%; background-color:#FFF;"name="iframe" frameborder="0" src="/home">  </iframe>
-				 
+                    <iframe id="iframe" style="border:0; width:100%; background-color:#FFF;"name="iframe" frameborder="0" src="home"></iframe>
 
 <!-- /.page-content -->
 				</div><!-- /.main-content -->	
                 
-                  <div class="ace-settings-container" id="ace-settings-container">
+                  <div class="ace-settings-container" id="ace-settings-container" style="top:0px;">
                       <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
                           <i class="icon-cog bigger-150"></i>
                       </div>

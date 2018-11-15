@@ -47,7 +47,7 @@
 
 <div class="register-container">
 	<h1>注册</h1>
-	<button type="button" class="btn btn-warning" id="button" style="background-color: #47b445;position:absolute;width: 200px;height: 200px;z-index: 9999;margin:83px -102px;display:none;">注册成功，去邮箱激活即可登陆！</button>
+	<button type="button" class="btn btn-warning" id="button" style="background-color: #bcd9ddc7;position:fixed;width: 200px;height: 200px;z-index: 9999;margin:83px -102px;display: none;">注册成功，去邮箱激活即可登陆！</button>
 	<form action="register_get" method="post" id="registerForm">
 		{{ csrf_field() }}
 		<div>
@@ -102,8 +102,8 @@
     });
 
     $('#username').bind('input propertychange', function() {
-        var id = $(this).val();
-        if(id!="") {
+            var id = $(this).val();
+            if(id!="") {
             $.ajax({
                 type: "get",
                 url: "/register_name?username="+id,

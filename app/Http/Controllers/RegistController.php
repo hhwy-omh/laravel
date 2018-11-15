@@ -4,11 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redis;
-use \Illuminate\Session\Middleware\StartSession;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class RegistController extends Controller
 {
@@ -17,7 +13,6 @@ class RegistController extends Controller
     {
         return view("register");
     }
-
     public function register_get(Request $req)
     {
         $data = $req->all();
@@ -30,7 +25,8 @@ class RegistController extends Controller
            'user' => $data['username'],
            'mobile' => $data['phone_number'],
            'password' => Hash::make($data['password']),
-           'email' => $data['email']
+           'email' => $data['email'],
+           'user_image' => 'upload/abc.jpg'
        ]);
        return redirect('login');
     }
@@ -51,10 +47,12 @@ class RegistController extends Controller
     {
         $user = DB::table('users')->where('user', $req->username)->first();
         $time = date("Y-m-d H:i:s");
+        $time_s = date("Y")."年".date("m")."月".date("d")."日".date("H")."时".date("i")."分";
+        $dates = intval(date("H").date("i").date("s"));
         if ($user) {
             if($user->quantity<3){
             if (Hash::check($req->password, $user->password)) {
-                if ($user->state == 1) {
+                if ($user->state != 0) {
                     $ip = $this->get_real_ip();
                     $stmt = $this->getCity($ip);
                     $ip_gsd = $stmt['country'].$stmt['region'].$stmt['city'];
@@ -67,8 +65,10 @@ class RegistController extends Controller
                     session([
                         'id' => $user->id,
                         'username' => $user->user,
+                        'date' => $time_s,
+                        'dates' => $dates,
                         'ip' => $ip_gsd,
-                        'date' => $time,
+                        'user_image' => $user->user_image
                     ]);
                     DB::table('users')->where('id', $user->id)->update(['quantity' => '0']);
                     session()->forget('error_s');
@@ -145,8 +145,9 @@ class RegistController extends Controller
         $use = DB::table('users')->where('user', $user)->where('token', $token)->first();
         if($use){
             DB::table('users')->where('user', $user)->update(['state' => '1']);
-            echo "<script> document.write('激活成功，请登陆！');parent.location.href='/login'; </script>";
         }
+        session()->flash('error_s','激活成功，请登录！');
+        return redirect('login');
     }
 
 }

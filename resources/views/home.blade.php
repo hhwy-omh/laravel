@@ -27,16 +27,19 @@
        </head>
 <script>
     $(document).ready(function(){
-        $("#h3_s").show().delay(20000).hide(2000);
+        $("#h3_s").show().delay(10000).hide(1000);
     });
 </script>
 <body>
 <div class="page-content clearfix">
-     @if(session('id'))
+    <?php $date = intval(date("H").date("i").date("s"))-9?>
+     @if(session('ip'))
+         @if(session('dates')>$date)
         <div class="alert alert-block alert-success" id="h3_s" style="display:none">
             <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
             <h3>你本次登陆的时间为{{session('date')}}，登陆地为:{{session('ip')}}</h3>
         </div>
+        @endif
      @endif
  <div class="state-overview clearfix">
                   <div class="col-lg-3 col-sm-6">
@@ -205,4 +208,8 @@ $('.no-radius').on('click', function(){
  });
 	 
 	 
- </script>   
+ </script>
+<?php
+//sleep(0.1);
+//session()->forget('ip');
+//?>

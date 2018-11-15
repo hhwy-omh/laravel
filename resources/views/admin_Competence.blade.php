@@ -24,13 +24,15 @@
 </head>
 
 <body>
+<form action="admin_Competence_in" method="post">
+    {{ csrf_field() }}
  <div class="margin clearfix">
    <div class="border clearfix">
        <span class="l_f">
-        <a href="Competence.html" id="Competence_add" class="btn btn-warning" title="添加权限"><i class="fa fa-plus"></i> 添加权限</a>
-        <a href="javascript:ovid()" class="btn btn-danger"><i class="fa fa-trash"></i> 批量删除</a>
+        <a href="Competence" id="Competence_add" class="btn btn-warning" title="添加权限"><i class="fa fa-plus"></i> 添加权限</a>
+        <a href="javascript:ovid()" class="btn btn-danger" style="padding:0px 0px;border:none;"><button id="submit" type="submit" style="padding:8px 20px;background-color: #f6ecec00;border:none;"><i class="fa fa-trash" style="color:#fff"></i>  <i style="color:#fff">批量删除</i></button></a>
        </span>
-       <span class="r_f">共：<b>5</b>类</span>
+       <span class="r_f">查询到：<b>{{ $age }}</b>条</span>
      </div>
      <div class="compete_list">
        <table id="sample-table-1" class="table table-striped table-bordered table-hover">
@@ -45,43 +47,24 @@
              </tr>
 		    </thead>
              <tbody>
+			 @foreach($data as $v)
 			  <tr>
-				<td class="center"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-				<td>超级管理员</td>
-				<td>1</td>
-				<td class="hidden-480">admin</td>
-				<td>拥有至高无上的权利,操作系统的所有权限</td>
+				<td class="center"><label><input type="checkbox" class="ace" name="age{{$v->id}}" value="{{$v->id}}"><span class="lbl"></span></label></td>
+				<td>{{ $v->admin }}</td>
+				<td>{{ $v->d }}</td>
+				<td class="hidden-480">{{ $v->e }}</td>
+				<td>{{ $v->title }}</td>
 				<td>
-                 <a title="编辑" onclick="Competence_modify('560')" href="javascript:;"  class="btn btn-xs btn-info" ><i class="fa fa-edit bigger-120"></i></a>        
-                 <a title="删除" href="javascript:;"  onclick="Competence_del(this,'1')" class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
+                 <a title="编辑" onclick="Competence_modify" href="\Competence_up?age={{ $v->id }}"  class="btn btn-xs btn-info" ><i class="fa fa-edit bigger-120"></i></a>
+                 <a title="删除" href="\admin_Competence_i?age={{ $v->id }}"  onclick="Competence_del" class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
 				</td>
 			   </tr>
-               <tr>
-				<td class="center"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-				<td>普通管理员</td>
-				<td>3</td>
-				<td class="hidden-480">admin123 , 张小泉 ,克雷鲍</td>
-				<td>拥有网站的系统大部分使用权限，没有权限管理功能。</td>
-				<td>
-                 <a title="编辑" onclick="Competence_modify('561')" href="javascript:;"  class="btn btn-xs btn-info" ><i class="fa fa-edit bigger-120"></i></a>        
-                 <a title="删除" href="javascript:;"  onclick="Competence_del(this,'2')" class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
-				</td>
-			   </tr>	
-               <tr>
-				<td class="center"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-				<td>编辑管理员</td>
-				<td>5</td>
-				<td class="hidden-480">admin345,stysty,adminstyle,admin45678,admin123455</td>
-				<td>拥有部分权限，主要进行编辑功能，无边界订单功能，权限分配功能。</td>
-				<td>
-                 <a title="编辑" onclick="Competence_modify('562')" href="javascript:;"  class="btn btn-xs btn-info" ><i class="fa fa-edit bigger-120"></i></a>        
-                 <a title="删除" href="javascript:;"  onclick="Competence_del(this,'3')" class="btn btn-xs btn-warning" ><i class="fa fa-trash  bigger-120"></i></a>
-				</td>
-			   </tr>												
+				 @endforeach
 		      </tbody>
 	        </table>
      </div>
  </div>
+</form>
  <!--添加权限样式-->
  <!-- <div id="Competence_add_style" style="display:none">
    <div class="Competence_add_style">
@@ -96,6 +79,15 @@
 </body>
 </html>
 <script type="text/javascript">
+    $('table th input:checkbox').on('click' , function(){
+        var that = this;
+        $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function(){
+                this.checked = that.checked;
+                $(this).closest('tr').toggleClass('selected');
+            });
+
+    });
 /*添加权限*/
 /* $('#Competence_add').on('click', function(){	 
 	 layer.open({

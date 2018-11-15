@@ -25,24 +25,33 @@
 </head>
 
 <body>
-<form action="Competence_post" method="post">
+<form action="Competence_update" method="post">
     {{ csrf_field() }}
 <div class="Competence_add_style clearfix">
+    @foreach($datas as $z)
+        <input type="hidden" name="id" value="{{$z->id}}">
   <div class="left_Competence_add">
    <div class="title_name">添加权限</div>
     <div class="Competence_add">
      <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 权限名称 </label>
-       <div class="col-sm-9"><input type="text" id="form-field-1" placeholder=""  name="admin" class="col-xs-10 col-sm-5"></div>
+       <div class="col-sm-9"><input type="text" id="form-field-1" placeholder="" name="admin" value="{{$z->admin}}" class="col-xs-10 col-sm-5" style="color:#333;"></div>
 	</div>
      <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 权限描述 </label>
-      <div class="col-sm-9"><textarea name="title" class="form-control" id="form_textarea" placeholder="" onkeyup="checkLength(this);"></textarea><span class="wordage">剩余字数：<span id="sy" style="color:Red;">200</span>字</span></div>
+      <div class="col-sm-9"><textarea name="title" class="form-control" id="form_textarea" placeholder="" onkeyup="checkLength(this);" style="color:#333;">{{$z->title}}</textarea><span class="wordage">剩余字数：<span id="sy" style="color:Red;">200</span>字</span></div>
 	</div>
-    <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 用户选择 </label>
+    <div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 用户选择</label>
        <div class="col-sm-9" id="authModal">
-		   @foreach($data as $v)
-       <label class="middle"><input class="ace" type="checkbox" name="user[]" value="{{$v->id}}" id="id-disable-check"><span class="lbl"> {{$v->user}}</span></label>
-		   @endforeach
-	</div>   
+		  @foreach($data as $v)
+              @foreach($on as $y)
+               @if($y == $v->id)
+       <label class="middle"><input class="ace" type="checkbox" name="user[]" value="{{$v->id}}" id="id-disable-check"  checked><span class="lbl"> {{$v->user}}</span></label>
+		        @endif
+               @endforeach
+         @endforeach
+              @foreach($datar as $z)
+       <label class="middle"><input class="ace" type="checkbox" name="user[]" value="{{$z->id}}" id="id-disable-check"><span class="lbl"> {{$z->user}}</span></label>
+                @endforeach
+	</div>
    </div>
    <!--按钮操作-->
    <div class="Button_operation">
@@ -60,18 +69,19 @@
           });
       </script>
    </div>
+@endforeach
    <!--权限分配-->
    <div class="Assign_style">
       <div class="title_name">权限分配</div>
       <div class="Select_Competence">
 		  @foreach($stmt as $v)
       <dl class="permission-list">
-		<dt><label class="middle"><input name="user-Character-0" class="ace" type="checkbox" id="id-disable-check"><span class="lbl">{{$v->privilege}}</span></label></dt>
+		<dt><label class="middle"><input class="ace" type="checkbox" id="id-disable-check"><span class="lbl">{{$v->privilege}}</span></label></dt>
 		<dd style="padding: 0px;height: 30px;">
-            @foreach($su as $z)
-                @if($v->id == $z->sub_privilege)
+            @foreach($su as $w)
+                @if($v->id == $w->sub_privilege)
 		 <dl class="cl permission-list2" style="padding: 0 0;height: 35px;display: inline-block">
-		 <dt><label class="middle"><input type="checkbox" value="{{$z->id}}" class="ace"  name="check[]" id="id-disable-check"><span class="lbl">{{$z->privilege}}</span></label></dt>
+		 <dt><label class="middle"><input type="checkbox" value="{{$w->id}}" class="ace"  name="check[]" id="id-disable-check"><span class="lbl">{{$w->privilege}}</span></label></dt>
 		</dl>
                 @endif
             @endforeach
