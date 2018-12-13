@@ -21,18 +21,7 @@ class BlogController extends Controller{
     public function home(){
         return view("home");
     }
-    public function Products_List(){
-      $this->rbac_admin();
-        return view("Products_List");
-    }
-    public function Brand_Manage(){
-      $this->rbac_admin();
-        return view("Brand_Manage");
-    }
-    public function Category_Manage(){
-      $this->rbac_admin();
-        return view("Category_Manage");
-    }
+
     public function advertising(){
       $this->rbac_admin();
         return view("advertising");
@@ -125,17 +114,9 @@ class BlogController extends Controller{
       $this->rbac_admin();
         return view("System_Logs");
     }
-    public function picture_add(){
-      $this->rbac_admin();
-        return view("picture-add");
-    }
     public function article_add(){
       $this->rbac_admin();
         return view("article-add");
-    }
-    public function product_category_add(){
-      $this->rbac_admin();
-        return view("product-category-add");
     }
 
 }

@@ -2,9 +2,9 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>网站后台管理系统  </title>
+		<title>NOON 管理系统  </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="shortcut icon" href="images/favicon.ico"/>
+		<link rel="shortcut icon" href="images/bitbug_favicon.ico"/>
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 		<!--[if IE 7]>
@@ -267,7 +267,7 @@ function link_operating(name,title){
 				<div class="navbar-header pull-left">
 					<a href="#" class="navbar-brand">
 						<small>					
-						<img src="images/logo.png" width="470px">
+						<img src="images/logo.png" style="width:250px;margin-left: 5px;">
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->

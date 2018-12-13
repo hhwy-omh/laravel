@@ -88,7 +88,9 @@
           <div class="col-sm-9"><input type="text" name="email" id="email" value="{{$v->email}}" class="col-xs-7 text_info" disabled="disabled" style="margin-right:100px;"></div>
           </div>
            <div class="form-group"><label class="col-sm-3 control-label no-padding-right" for="form-field-1">权限： </label>
-          <div class="col-sm-9" > <span>{{$v->admin}}</span></div>
+          <div class="col-sm-9" >
+              <span>{{$v->admin}}</span>
+          </div>
           </div>
            <div class="form-group"><label class="col-sm-3 control-label no-padding-right" for="form-field-1">注册时间： </label>
           <div class="col-sm-9" > <span>{{$v->created_at}}</span></div>
@@ -111,7 +113,7 @@
       <tr class="text-c">
         <th width="25"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></th>
         <th width="80">ID</th>
-        <th width="100">类型</th>
+        <th width="100">状态</th>
         <th width="17%">登陆地点</th>
         <th width="10%">用户名</th>
         <th width="120">客户端IP</th>
@@ -123,7 +125,11 @@
       <tr>
         <td><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
           <td>{{$z->id}}</td>
-          <td>{{$z->id_root}}</td>
+          @if($z->login_off==1)
+                <td>登陆</td>
+          @else
+                <td>退出</td>
+          @endif
           <td>{{$z->address}}</td>
           <td>{{$z->user}}</td>
           <td>{{$z->ip}}</td>

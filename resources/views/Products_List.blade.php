@@ -361,22 +361,9 @@ var setting = {
 };
 
 var zNodes =[
-	{ id:1, pId:0, name:"商城分类列表", open:true},
-	{ id:11, pId:1, name:"蔬菜水果"},
-	{ id:111, pId:11, name:"蔬菜"},
-	{ id:112, pId:11, name:"苹果"},
-	{ id:113, pId:11, name:"大蒜"},
-	{ id:114, pId:11, name:"白菜"},
-	{ id:115, pId:11, name:"青菜"},
-	{ id:12, pId:1, name:"手机数码"},
-	{ id:121, pId:12, name:"手机 "},
-	{ id:122, pId:12, name:"照相机 "},
-	{ id:13, pId:1, name:"电脑配件"},
-	{ id:131, pId:13, name:"手机 "},
-	{ id:122, pId:13, name:"照相机 "},
-	{ id:14, pId:1, name:"服装鞋帽"},
-	{ id:141, pId:14, name:"手机 "},
-	{ id:42, pId:14, name:"照相机 "},
+     @foreach($data as $v)
+    { id:{{$v->id}}, pId:{{$v->name_id}}, name:"{{$v->name}}"},
+    @endforeach
 ];
 		
 var code;
@@ -435,11 +422,10 @@ $('.Order_form').on('click', function(){
 	var cnames = parent.$('.Current_page').html();
 	var herf = parent.$("#iframe").attr("src");
     parent.$('#parentIframe').html(cname);
-    parent.$('#iframe').attr("src",chref).ready();;
+    parent.$('#iframe').attr("src",chref).ready();
 	parent.$('#parentIframe').css("display","inline-block");
 	parent.$('.Current_page').attr({"name":herf,"href":"javascript:void(0)"}).css({"color":"#4c8fbd","cursor":"pointer"});
 	//parent.$('.Current_page').html("<a href='javascript:void(0)' name="+herf+" class='iframeurl'>" + cnames + "</a>");
     parent.layer.close(index);
-	
 });
 </script>

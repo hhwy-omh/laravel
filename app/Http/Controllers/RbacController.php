@@ -118,7 +118,6 @@ class RbacController extends Controller
         $data = DB::select("SELECT c.*,GROUP_CONCAT( DISTINCT a.admin ) admin FROM sns_role AS a LEFT JOIN sns_user_role AS b ON a.id = b.role_id LEFT JOIN sns_users AS c ON b.user_id =c.id WHERE ".$where." GROUP BY c.id");
         return view("administrator",['data'=>$data,'user'=>$user]);
     }
-
     public function administrator_update(){
         $id = $_GET['id'];
         $quantity = DB::table('users')->where('id', $id)->get();
@@ -163,9 +162,9 @@ class RbacController extends Controller
     {
          $this->rbac_admin();
          $id = session('id');
-         $user = DB::select("SELECT a.*,group_concat(c.admin) admin FROM sns_users AS a LEFT JOIN sns_user_role AS b ON a.id = b.user_id LEFT JOIN sns_role AS c ON b.role_id = c.id WHERE a.id = $id");
-         $data = DB::select("SELECT a.id,a.`user`,a.id_root,b.ip,b.ip_time,b.address FROM sns_users AS a ,sns_user_record AS b WHERE a.id = $id AND b.user_id= $id");
-         return view("admin_info", ['data' => $data, 'user' => $user]);
+         $user = DB::select("SELECT a.*,group_concat(c.admin) AS admin FROM sns_users AS a LEFT JOIN sns_user_role AS b ON a.id = b.user_id LEFT JOIN sns_role AS c ON b.role_id = c.id WHERE a.id = $id");
+         $data = DB::select("SELECT a.id,a.`user`,b.login_off,b.ip,b.ip_time,b.address FROM sns_users AS a ,sns_user_record AS b WHERE a.id = $id AND b.user_id= $id");
+         return view("admin_info", ['data' => $data,'user' => $user]);
     }
     public function admin_info_up(Request $req)
     {
@@ -175,7 +174,8 @@ class RbacController extends Controller
             if (Hash::check($data['password_s'], $stmt->password)) {
                 DB::table('users')->where('id', $id)->update(['password' => Hash::make($data['password'])]);
                 session()->flush();
-                echo "密码重置成功，请重新登录！";
+                session()->flash('error_s','密码已重置成功，请重新登录');
+                echo "<script>window.parent.location.href='login';</script>";
             }else{
                 session()->flash('error_se', '密码不正确！');
            }

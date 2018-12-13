@@ -26,36 +26,8 @@
  <div class="type_title">产品类型信息</div>
   <div class="type_content">
   <div class="Operate_btn">
-  <a href="javascript:ovid()" class="btn  btn-warning"><i class="icon-edit align-top bigger-125"></i>新增子类型</a>
-  <a href="javascript:ovid()" class="btn  btn-success"><i class="icon-ok align-top bigger-125"></i>禁用该类型</a>
-  <a href="javascript:ovid()" class="btn  btn-danger"><i class="icon-trash   align-top bigger-125"></i>删除该类型</a>
+  <a href="Category_Manage_in" class="btn  btn-warning"><i class="icon-edit align-top bigger-125"></i>新增分类</a>
   </div>
-  <form action="" method="post" class="form form-horizontal" id="form-user-add">
-    <div class="Operate_cont clearfix">
-      <label class="form-label"><span class="c-red">*</span>分类名称：</label>
-      <div class="formControls ">
-        <input type="text" class="input-text" value="" placeholder="" id="user-name" name="product-category-name">
-      </div>
-    </div>
-        <div class="Operate_cont clearfix">
-      <label class="form-label"><span class="c-red">*</span>排序：</label>
-      <div class="formControls ">
-        <input type="text" class="input-text" value="" placeholder="" id="user-name" name="product-category-name">
-      </div>
-    </div>
-    <div class="Operate_cont clearfix">
-    <label class="form-label">备注：</label>
-    <div class="formControls">
-    <textarea name="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
-     <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
-    </div>
-    </div>
-    <div class="">
-     <div class="" style=" text-align:center">
-      <input class="btn btn-primary radius" type="submit" value="提交">
-      </div>
-    </div>
-  </form>
   </div>
 </div> 
 </div>

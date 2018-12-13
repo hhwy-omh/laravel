@@ -26,6 +26,7 @@ class RegistController extends Controller
            'mobile' => $data['phone_number'],
            'password' => Hash::make($data['password']),
            'email' => $data['email'],
+           'id_root' => 2,
            'user_image' => 'upload/abc.jpg'
        ]);
        return redirect('login');
@@ -54,12 +55,12 @@ class RegistController extends Controller
             if (Hash::check($req->password, $user->password)) {
                 if ($user->state != 0) {
                     $ip = $this->get_real_ip();
-                    $stmt = $this->getCity($ip);
-                    $ip_gsd = $stmt['country'].$stmt['region'].$stmt['city'];
+//                    $stmt = $this->getCity($ip);
+//                    $ip_gsd = $stmt['country'].$stmt['region'].$stmt['city'];
                     DB::table('user_record')->insert([
                         'ip' => $ip,
                         'ip_time' => $time,
-                        'address' => $ip_gsd,
+                        'address' => $ip,
                         'user_id' => $user->id,
                     ]);
                     session([
@@ -67,7 +68,8 @@ class RegistController extends Controller
                         'username' => $user->user,
                         'date' => $time_s,
                         'dates' => $dates,
-                        'ip' => $ip_gsd,
+                        'address' => $ip,
+                        'ip' => $ip,
                         'user_image' => $user->user_image
                     ]);
                     DB::table('users')->where('id', $user->id)->update(['quantity' => '0']);
@@ -97,6 +99,7 @@ class RegistController extends Controller
         session()->flush();
         return redirect('/');
     }
+
     function get_real_ip()
     {
         $ip=FALSE;

@@ -54,7 +54,6 @@
 <script src="js/supersized-init.js"></script>
 <!--表单验证-->
 <script src="js/jquery.validate.min.js?var1.14.0"></script>
-
 </body>
 </html>
 <script>
